@@ -1,4 +1,5 @@
 @font-face{font-family:Golos;src:url('./assets/GolosText.ttf') format('truetype');font-weight:100 900;font-display:swap}
+.feed{align-content:start;overflow:clip}
 @font-face{font-family:'PT Sans';src:url('./assets/PTSans-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'PT Sans';src:url('./assets/PTSans-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
 :root{--ink:#19465b;--ice:#e5f3f8;--yellow:#ffdf42;--orange:#ff7645;--muted:#496473;--line:#c9dce4;color:var(--ink);background:#fff;font-family:'PT Sans',Arial,sans-serif;font-synthesis:none;scroll-behavior:smooth;scroll-padding-top:110px}

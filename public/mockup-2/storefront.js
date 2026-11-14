@@ -48,34 +48,36 @@ function card(base) {
   </article>`;
 }
 function summary(m,s) { return `${m.name}, ${m.version}<br>Аккумулятор: ${m.labels[s.battery]}<br>Сиденье: ${seats[s.seat].toLowerCase()}${m.id==='u2-premium'?`<br>Цвет: ${s.color==='black'?'чёрный':'серебристый'}`:''}${s.seat ? '<br><small>Стоимость выбранного сиденья не включена.</small>':''}`; }
+let renderRevision = 0;
 function render(animate = false) {
+  const revision = ++renderRevision;
+  const opacity = getComputedStyle(feed).opacity;
+  feed.getAnimations().forEach(animation => animation.cancel());
   animate = animate && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const positions = new Map();
-  if (animate) {
-    feed.querySelectorAll('[data-id]').forEach(card => positions.set(card.dataset.id, card.getBoundingClientRect()));
-  }
   const shown = baseModels.filter(m=>family==='all'||m.family===family);
   const sort = document.querySelector('#sort').value;
   if(sort!=='default') shown.sort((a,b)=>(selectedModel(a).prices[settings.get(a.id).battery]-selectedModel(b).prices[settings.get(b.id).battery])*(sort==='price'?1:-1));
-  feed.innerHTML = shown.map(card).join('');
-  for (const card of feed.querySelectorAll('[data-id]')) {
-    const previous = positions.get(card.dataset.id);
-    if (!previous) {
-      if (animate) card.animate([
-        {opacity:.35, transform:'translateY(10px)'},
-        {opacity:1, transform:'translateY(0)'}
-      ], {duration:320, easing:'ease-out'});
-      continue;
-    }
-    const next = card.getBoundingClientRect();
-    const x = previous.left - next.left, y = previous.top - next.top;
-    if (x || y) card.animate([
-      {transform:`translate(${x}px, ${y}px)`},
-      {transform:'translate(0, 0)'}
-    ], {duration:480, easing:'cubic-bezier(.22,1,.36,1)'});
+  const html = shown.map(card).join('');
+  function commit() {
+    const focusedId = feed.contains(document.activeElement) ? document.activeElement.id : null;
+    feed.innerHTML = html;
+    document.querySelector('#result-count').textContent = `Моделей: ${shown.length}`;
+    feed.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.classList.add('image-error');img.alt='Фотография не загрузилась. Обновите страницу.';}));
+    if (focusedId) document.getElementById(focusedId)?.focus({preventScroll:true});
   }
-  document.querySelector('#result-count').textContent = `Моделей: ${shown.length}`;
-  feed.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.classList.add('image-error');img.alt='Фотография не загрузилась. Обновите страницу.';}));
+  if (!animate) { commit(); return; }
+  const leaving = feed.animate([{opacity},{opacity:0}], {duration:140, easing:'ease-out', fill:'forwards'});
+  leaving.finished.then(() => {
+    if (revision !== renderRevision) return;
+    const oldHeight = feed.getBoundingClientRect().height;
+    commit();
+    const newHeight = feed.getBoundingClientRect().height;
+    leaving.cancel();
+    feed.animate([
+      {opacity:0, height:`${oldHeight}px`, transform:'translateY(6px)'},
+      {opacity:1, height:`${newHeight}px`, transform:'translateY(0)'}
+    ], {duration:320, easing:'cubic-bezier(.22,1,.36,1)'});
+  }).catch(() => {});
 }
 document.querySelectorAll('[data-family]').forEach(button=>button.addEventListener('click',()=>{
   family=button.dataset.family;
