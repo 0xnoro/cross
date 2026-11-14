@@ -48,20 +48,41 @@ function card(base) {
   </article>`;
 }
 function summary(m,s) { return `${m.name}, ${m.version}<br>Аккумулятор: ${m.labels[s.battery]}<br>Сиденье: ${seats[s.seat].toLowerCase()}${m.id==='u2-premium'?`<br>Цвет: ${s.color==='black'?'чёрный':'серебристый'}`:''}${s.seat ? '<br><small>Стоимость выбранного сиденья не включена.</small>':''}`; }
-function render() {
+function render(animate = false) {
+  animate = animate && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const positions = new Map();
+  if (animate) {
+    feed.querySelectorAll('[data-id]').forEach(card => positions.set(card.dataset.id, card.getBoundingClientRect()));
+  }
   const shown = baseModels.filter(m=>family==='all'||m.family===family);
   const sort = document.querySelector('#sort').value;
   if(sort!=='default') shown.sort((a,b)=>(selectedModel(a).prices[settings.get(a.id).battery]-selectedModel(b).prices[settings.get(b.id).battery])*(sort==='price'?1:-1));
   feed.innerHTML = shown.map(card).join('');
+  for (const card of feed.querySelectorAll('[data-id]')) {
+    const previous = positions.get(card.dataset.id);
+    if (!previous) {
+      if (animate) card.animate([
+        {opacity:.35, transform:'translateY(10px)'},
+        {opacity:1, transform:'translateY(0)'}
+      ], {duration:320, easing:'ease-out'});
+      continue;
+    }
+    const next = card.getBoundingClientRect();
+    const x = previous.left - next.left, y = previous.top - next.top;
+    if (x || y) card.animate([
+      {transform:`translate(${x}px, ${y}px)`},
+      {transform:'translate(0, 0)'}
+    ], {duration:480, easing:'cubic-bezier(.22,1,.36,1)'});
+  }
   document.querySelector('#result-count').textContent = `Моделей: ${shown.length}`;
   feed.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.classList.add('image-error');img.alt='Фотография не загрузилась. Обновите страницу.';}));
 }
 document.querySelectorAll('[data-family]').forEach(button=>button.addEventListener('click',()=>{
   family=button.dataset.family;
   document.querySelectorAll('[data-family]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
-  render();
+  render(true);
 }));
-document.querySelector('#sort').addEventListener('change',render);
+document.querySelector('#sort').addEventListener('change',()=>render(true));
 feed.addEventListener('change',event=>{
   const el=event.target, article=el.closest('[data-id]'); if(!article) return;
   const base=models.find(m=>m.id===article.dataset.id), s=settings.get(base.id);
@@ -87,7 +108,7 @@ feed.addEventListener('change',event=>{
   article.querySelector('[data-chosen-battery]').textContent=m.labels[s.battery];
   article.querySelector('.save-status').textContent='';
   if(el.matches('[data-battery]') && document.querySelector('#sort').value!=='default') {
-    render();
+    render(true);
     document.getElementById(`battery-${base.id}`).focus({preventScroll:true});
   }
 });
@@ -144,15 +165,8 @@ document.querySelectorAll('[data-battery-enquiry]').forEach(button=>button.addEv
   document.querySelector('#battery-dialog-title').textContent=button.dataset.batteryEnquiry;
   document.querySelector('#battery-dialog').showModal();
 }));
-document.querySelectorAll('[data-shop-photo]').forEach(button=>button.addEventListener('click',()=>{
-  const image=document.querySelector('#shop-full-photo');
-  image.src=button.dataset.shopPhoto;
-  image.alt=button.dataset.caption;
-  document.querySelector('#photo-dialog-title').textContent=button.dataset.caption;
-  document.querySelector('#photo-dialog').showModal();
-}));
 document.querySelectorAll('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog').close()));
-for(const id of ['battery-dialog','photo-dialog']) {
+for(const id of ['battery-dialog']) {
   const modal=document.getElementById(id);
   modal.addEventListener('click',event=>{
     if(event.target!==modal)return;
@@ -171,8 +185,6 @@ function initShopMotion() {
     const clone=item.cloneNode(true);
     clone.classList.add('shop-repeat');
     clone.setAttribute('aria-hidden','true');
-    clone.tabIndex=-1;
-    clone.addEventListener('click',()=>item.click());
     track.append(clone);
   });
   rail.append(track);
@@ -199,7 +211,6 @@ function initShopMotion() {
   reduced.addEventListener('change',()=>{layout();update();});
   new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;update();}).observe(rail);
   new ResizeObserver(layout).observe(rail);
-  new MutationObserver(update).observe(document.querySelector('#photo-dialog'),{attributes:true,attributeFilter:['open']});
   layout();
 }
 initShopMotion();

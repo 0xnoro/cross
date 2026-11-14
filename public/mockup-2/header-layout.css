@@ -29,3 +29,4 @@
  .header nav a{min-height:44px}
 }
 @media(prefers-reduced-motion:reduce){.header,.header .header-inner{transition:none}}
+@media(max-width:360px){.header .header-inner{column-gap:6px}.header .logo{font-size:24px}.header .saved-button{font-size:11px;padding:8px}.header .social-links>a,.header .social-links>span{width:28px}}
