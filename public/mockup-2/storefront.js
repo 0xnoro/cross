@@ -14,8 +14,9 @@ const models = [
   {id:'u2-premium',family:'u2',name:'U2PRO Premium',version:'3000 Вт',photo:71,prices:[64000,94000],labels:['Без аккумулятора','60 В · 45 А·ч'],detail:'LiFePO₄ · 4 режима скорости'}
 ];
 const seats = ['Штатное', 'Широкое', 'Удлинённое', 'Со спинкой'];
-const settings = new Map(models.map(m => [m.id, {modelId:m.id,battery:1,seat:0,color:'silver',open:false}]));
-const selectedModel = (base) => models.find(m=>m.id===settings.get(base.id).modelId) || base;
+const baseModels = models.filter((model,index)=>models.findIndex(item=>item.name===model.name)===index);
+const settings = new Map(baseModels.map(m => [m.id, {modelId:m.id,battery:1,seat:0,color:'silver',open:false}]));
+const selectedModel = (base) => models.find(m=>m.id===settings.get(base.id).modelId && m.name===base.name) || base;
 const feed = document.querySelector('#feed');
 let family = 'all';
 let saved = null;
@@ -28,7 +29,6 @@ const photo = m => `./assets/catalog/photo-${m.photo}.webp`;
 const arrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
 function card(base) {
   const s = settings.get(base.id), m=selectedModel(base), key=base.id;
-  const names=[...new Set(models.map(item=>item.name))];
   const versions=models.filter(item=>item.name===m.name);
   return `<article class="bike-card" data-id="${key}" aria-labelledby="title-${key}">
     <div class="bike-heading"><div><h3 id="title-${key}">${m.name}</h3><p>${m.version}</p></div><span class="brand-stamp">CROSS</span></div>
@@ -38,7 +38,7 @@ function card(base) {
     <button class="configure" data-configure aria-expanded="${s.open}" aria-controls="config-${key}">${s.open?'Свернуть конструктор':'Собрать велосипед'}${arrow}</button></div>
     <div class="configuration" id="config-${key}" ${s.open?'':'hidden'}>
     <h4>Собери свой CROSS</h4>
-    <label class="config-field" for="model-${key}">Модель<select id="model-${key}" data-model>${names.map(name=>`<option ${name===m.name?'selected':''}>${name}</option>`).join('')}</select></label>
+    <div class="fixed-version"><span>Модель</span><strong>${base.name}</strong></div>
     ${versions.length>1?`<label class="config-field" for="version-${key}">Мощность и подвеска<select id="version-${key}" data-version>${versions.map(v=>`<option value="${v.id}" ${v.id===m.id?'selected':''}>${v.version}${v.id==='monster-2'?' · базовая версия':''}</option>`).join('')}</select></label>`:`<div class="fixed-version"><span>Мощность и оснащение</span><strong>${m.version} · ${m.detail}</strong></div>`}
     <label class="config-field" for="battery-${key}">Аккумулятор<select id="battery-${key}" data-battery>${m.labels.map((l,i)=>`<option value="${i}" ${s.battery===i?'selected':''}>${l} (${money(m.prices[i])})</option>`).join('')}</select><small>В скобках стоимость велосипеда с выбранным аккумулятором.</small></label>
     <fieldset><legend>Сиденье</legend><div class="seat-options">${seats.map((seat,i)=>`<label><input type="radio" name="seat-${key}" value="${i}" ${s.seat===i?'checked':''}><span>${seat}</span></label>`).join('')}</div></fieldset>
@@ -49,7 +49,7 @@ function card(base) {
 }
 function summary(m,s) { return `${m.name}, ${m.version}<br>Аккумулятор: ${m.labels[s.battery]}<br>Сиденье: ${seats[s.seat].toLowerCase()}${m.id==='u2-premium'?`<br>Цвет: ${s.color==='black'?'чёрный':'серебристый'}`:''}${s.seat ? '<br><small>Стоимость выбранного сиденья не включена.</small>':''}`; }
 function render() {
-  const shown = models.filter(m=>family==='all'||m.family===family);
+  const shown = baseModels.filter(m=>family==='all'||m.family===family);
   const sort = document.querySelector('#sort').value;
   if(sort!=='default') shown.sort((a,b)=>(selectedModel(a).prices[settings.get(a.id).battery]-selectedModel(b).prices[settings.get(b.id).battery])*(sort==='price'?1:-1));
   feed.innerHTML = shown.map(card).join('');
@@ -66,14 +66,15 @@ feed.addEventListener('change',event=>{
   const el=event.target, article=el.closest('[data-id]'); if(!article) return;
   const base=models.find(m=>m.id===article.dataset.id), s=settings.get(base.id);
   let m=selectedModel(base);
-  if(el.matches('[data-model], [data-version]')) {
-    const next=el.matches('[data-model]')?models.find(item=>item.name===el.value):models.find(item=>item.id===el.value);
+  if(el.matches('[data-version]')) {
+    const next=models.find(item=>item.id===el.value && item.name===base.name);
+    if(!next) return;
     const batteryLabel=m.labels[s.battery];
     s.modelId=next.id;
     s.battery=next.labels.includes(batteryLabel)?next.labels.indexOf(batteryLabel):1;
     s.color='silver';
     render();
-    document.getElementById(`${el.matches('[data-model]')?'model':'version'}-${base.id}`).focus({preventScroll:true});
+    document.getElementById(`version-${base.id}`).focus({preventScroll:true});
     return;
   }
   if(el.matches('[data-battery]')) s.battery=Number(el.value);
@@ -118,9 +119,11 @@ dialog.addEventListener('click',event=>{
   if(event.target.matches('[data-remove]')){saved=null;try{localStorage.removeItem('cross-build-v2');}catch{}document.querySelector('#saved-count').textContent='0';renderSaved();}
   if(event.target.matches('[data-return]')){dialog.close();document.querySelector('[data-family]').focus();}
   if(event.target.matches('[data-edit]')){
-    settings.set(saved.id,{modelId:saved.id,battery:saved.battery,seat:saved.seat,color:saved.color,open:true});
+    const model=models.find(m=>m.id===saved.id);
+    const base=baseModels.find(m=>m.name===model.name);
+    settings.set(base.id,{modelId:saved.id,battery:saved.battery,seat:saved.seat,color:saved.color,open:true});
     document.querySelector('[data-family="all"]').click();dialog.close();
-    const article=feed.querySelector(`[data-id="${saved.id}"]`);article.scrollIntoView({block:'start'});article.querySelector('[data-configure]').focus({preventScroll:true});
+    const article=feed.querySelector(`[data-id="${base.id}"]`);article.scrollIntoView({block:'start'});article.querySelector('[data-configure]').focus({preventScroll:true});
   }
 });
 document.querySelector('#saved-count').textContent=saved?'1':'0';
