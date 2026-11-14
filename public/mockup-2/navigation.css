@@ -1,4 +1,8 @@
 @view-transition { navigation: auto; }
+.topline .social-links{justify-content:flex-end;gap:4px;padding-block:0}
+.social-links>a,.social-links>span{display:grid;place-items:center;width:44px;height:44px;color:#fff}
+.social-links svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7}
+.social-links a:hover{color:var(--yellow)}
 
 @media (prefers-reduced-motion: no-preference) {
   main { view-transition-name: catalogue; }
