@@ -55,7 +55,15 @@ input { accent-color: var(--olive); caret-color: var(--olive); }
 .source-note { color: var(--muted); font-size: 12px; line-height: 1.6; margin-top: 24px; max-width: 80ch; }
 .no-script { margin: 100px 24px 24px; padding: 24px; background: var(--stone); }
 
-.site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 20; color: white; transition: background .3s, color .3s, box-shadow .3s; }
+.site-header { position: fixed; top: 0; left: 0; right: 0; width:100%; margin-inline:auto; z-index: 20; color: white; transition: background .3s, color .3s, box-shadow .3s, width .3s ease, top .3s ease, border-radius .3s ease; }
+.site-header.is-floating { top:12px; width:calc(100% - 48px); max-width:1328px; border:1px solid var(--line); border-radius:14px; }
+.site-header.is-floating.is-solid { box-shadow:0 6px 24px #00000014; }
+.site-header.is-floating .header-inner { padding-inline:24px; }
+@media(max-width:760px) {
+  .site-header.is-floating { top:8px; width:calc(100% - 16px); border-radius:10px; }
+  .site-header.is-floating .header-inner { padding-inline:12px; }
+}
+@media(prefers-reduced-motion:reduce) { .site-header { transition:none; } }
 .site-header.is-solid, .site-header.menu-open { background: white; color: var(--ink); box-shadow: 0 1px 0 #2527240c; }
 .site-header:not(.is-solid):not(.menu-open) .wordmark,
 .site-header:not(.is-solid):not(.menu-open) .desktop-nav { text-shadow: 0 2px 5px #00000066; }
