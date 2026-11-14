@@ -25,14 +25,15 @@ try {
   const model = models.find(m => m.id === candidate?.id);
   if (model && Number.isInteger(candidate.battery) && model.prices[candidate.battery] !== undefined && Number.isInteger(candidate.seat) && seats[candidate.seat]) saved = {...candidate,color:candidate.color==='black'?'black':'silver'};
 } catch {}
-const photo = m => `./assets/catalog/photo-${m.photo}.webp`;
+const studioPhotos = {'Монстр Про':'monster-pro','Монстр 2 Про':'monster-2-pro','Титан Про':'titan-pro','Титан 2 Про':'titan-2-pro','U2 CROSS':'u2','U2PRO Premium':'u2pro-premium'};
+const photo = m => `./assets/studio/${studioPhotos[m.name]}.webp`;
 const arrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
 function card(base) {
   const s = settings.get(base.id), m=selectedModel(base), key=base.id;
   const versions=models.filter(item=>item.name===m.name);
   return `<article class="bike-card" data-id="${key}" aria-labelledby="title-${key}">
     <div class="bike-heading"><div><h3 id="title-${key}">${m.name}</h3><p>${m.version}</p></div><span class="brand-stamp">CROSS</span></div>
-    <div class="bike-photo"><img src="${photo(m)}" alt="${m.name}, ${m.version}, фотография из магазина CROSS" width="1000" height="750" loading="lazy"><span class="photo-detail">${m.detail}</span></div>
+    <div class="bike-photo"><img src="${photo(m)}" alt="${m.name}, витринное изображение модели" width="1600" height="1200" loading="lazy"><span class="photo-detail">${m.detail}</span></div>
     <div class="purchase"><p class="chosen-battery" data-chosen-battery>${m.labels[s.battery]}</p>
     <div class="price-row"><strong data-price>${money(m.prices[s.battery])}</strong><span data-price-note>${s.battery?'велосипед + АКБ':'велосипед без АКБ'}</span></div>
     <button class="configure" data-configure aria-expanded="${s.open}" aria-controls="config-${key}">${s.open?'Свернуть конструктор':'Собрать велосипед'}${arrow}</button></div>
@@ -128,3 +129,23 @@ dialog.addEventListener('click',event=>{
 });
 document.querySelector('#saved-count').textContent=saved?'1':'0';
 render();
+document.querySelectorAll('[data-battery-enquiry]').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelector('#battery-dialog-title').textContent=button.dataset.batteryEnquiry;
+  document.querySelector('#battery-dialog').showModal();
+}));
+document.querySelectorAll('[data-shop-photo]').forEach(button=>button.addEventListener('click',()=>{
+  const image=document.querySelector('#shop-full-photo');
+  image.src=button.dataset.shopPhoto;
+  image.alt=button.dataset.caption;
+  document.querySelector('#photo-dialog-title').textContent=button.dataset.caption;
+  document.querySelector('#photo-dialog').showModal();
+}));
+document.querySelectorAll('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog').close()));
+for(const id of ['battery-dialog','photo-dialog']) {
+  const modal=document.getElementById(id);
+  modal.addEventListener('click',event=>{
+    if(event.target!==modal)return;
+    const r=modal.getBoundingClientRect();
+    if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)modal.close();
+  });
+}

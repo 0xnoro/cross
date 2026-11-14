@@ -7,8 +7,8 @@ export const products = [
     name: 'Титан 2 Pro',
     shortName: 'Титан 2 Pro',
     confirmedName: true,
-    image: siteUrl('assets/bike-pro-white.webp'),
-    alt: 'Бордовый электробайк Титан 2 Pro с корзиной и задним багажником',
+    image: siteUrl('assets/studio/titan-2-pro.webp'),
+    alt: 'CROSS Титан 2 Pro с корзиной и задним багажником',
     frame: 'enclosed',
     frameLabel: 'Закрытый корпус',
     seat: 'Сиденье и задний багажник',
@@ -28,7 +28,7 @@ export const products = [
     name: 'U2PRO Premium',
     shortName: 'U2PRO Premium',
     confirmedName: true,
-    image: siteUrl('assets/bike-city-white.webp'),
+    image: siteUrl('assets/studio/u2pro-premium.webp'),
     alt: 'Серый CROSS U2PRO Premium с длинным сиденьем и пассажирской спинкой',
     frame: 'enclosed',
     frameLabel: 'Закрытый корпус',
@@ -53,7 +53,7 @@ export const products = [
     name: 'Монстр 2 Pro',
     shortName: 'Монстр 2 Pro',
     confirmedName: true,
-    image: siteUrl('assets/bike-standard-white.webp'),
+    image: siteUrl('assets/studio/monster-2-pro.webp'),
     alt: 'Чёрный электробайк с открытой рамой, аккумуляторными отсеками и задним багажником',
     frame: 'open',
     frameLabel: 'Открытая рама',
@@ -67,6 +67,49 @@ export const products = [
     enquiry: 'электробайк с открытой рамой и двумя аккумуляторными отсеками из витрины CROSS',
     features: ['Открытая рама', 'Два отсека для АКБ'],
     specs: [['Мотор', '1200 Вт'], ['Максимальная скорость', 'до 65 км/ч'], ['Максимальная нагрузка', '200 кг'], ['Варианты АКБ', '60 В · 21 / 30 А·ч'], ['Аккумуляторные отсеки', 'Два'], ['Тормоза', 'Двухпоршневые'], ['Задний ход', 'Есть'], ['Запуск', 'Смарт-карта'], ['Подвеска', 'Задние амортизаторы'], ['Свет', 'Габарит, ближний и дальний'], ['Задний багажник', 'Есть']],
+  },
+  {
+    id: 'monster-pro', featured: true, name: 'Монстр Про', shortName: 'Монстр Про', confirmedName: true,
+    image: siteUrl('assets/studio/monster-pro.webp'), alt: 'CROSS Монстр Про с передней корзиной и задним багажником',
+    frame: 'open', frameLabel: 'Открытая рама', seat: 'Сиденье и задний багажник', price: 27500,
+    power: '800 Вт', battery: '60 В · 21 / 30 А·ч', speed: 'до 55 км/ч', load: 'до 200 кг',
+    description: 'Открытая рама, передняя корзина и задняя грузовая площадка. Комплектации с одним или двумя аккумуляторами.',
+    enquiry: 'CROSS Монстр Про 800 Вт', features: ['800 Вт', 'Выбор аккумулятора'],
+    variants: [
+      {id:'with',name:'С аккумулятором 21 А·ч',description:'60 В / 21 А·ч',price:44500},
+      {id:'dual',name:'С двумя аккумуляторами',description:'2 × 60 В / 21 А·ч',price:62000},
+      {id:'large',name:'С аккумулятором 30 А·ч',description:'60 В / 30 А·ч',price:52000},
+      {id:'without',name:'Без аккумулятора',description:'Аккумулятор не входит в комплект',price:27500}
+    ],
+    specs: [['Мотор','800 Вт'],['Максимальная скорость','до 55 км/ч'],['Максимальная нагрузка','200 кг'],['Аккумулятор','60 В · 21 / 30 А·ч'],['Оснащение','Корзина, задний багажник']]
+  },
+  {
+    id: 'titan-pro', featured: true, name: 'Титан Про', shortName: 'Титан Про', confirmedName: true,
+    image: siteUrl('assets/studio/titan-pro.webp'), alt: 'CROSS Титан Про с аккумуляторным корпусом под сиденьем',
+    frame: 'enclosed', frameLabel: 'Закрытый корпус', seat: 'Сиденье и задний багажник', price: 37000,
+    power: '1200 Вт', battery: 'LiFePO4 · 60 В · 30 А·ч', speed: 'до 65 км/ч', load: 'до 200 кг',
+    description: 'Аккумулятор LiFePO4, задние амортизаторы и запуск с ключа. Передняя корзина и задняя площадка для вещей.',
+    enquiry: 'CROSS Титан Про', features: ['1200 Вт', 'LiFePO4'],
+    variants: [
+      {id:'with',name:'С аккумулятором',description:'LiFePO4 / 60 В / 30 А·ч',price:59990},
+      {id:'dual',name:'С двумя аккумуляторами',description:'2 × 60 В / 30 А·ч',price:86000},
+      {id:'without',name:'Без аккумулятора',description:'Аккумулятор не входит в комплект',price:37000}
+    ],
+    specs: [['Мотор','1200 Вт'],['Максимальная скорость','до 65 км/ч'],['Максимальная нагрузка','200 кг'],['Аккумулятор','LiFePO4 · 60 В · 30 А·ч'],['Запуск','Ключ, сигнализация'],['Подвеска','Задние амортизаторы']]
+  },
+  {
+    id: 'u2', featured: true, name: 'U2 CROSS', shortName: 'U2 CROSS', confirmedName: true,
+    image: siteUrl('assets/studio/u2.webp'), alt: 'Чёрный U2 CROSS с оранжевой окантовкой и длинным сиденьем',
+    frame: 'enclosed', frameLabel: 'Закрытый корпус', seat: 'Длинное, со спинкой', price: 53900,
+    power: '1500 Вт', battery: 'LiFePO4 · 60 В · 30 А·ч', speed: 'до 73 км/ч', load: 'до 300 кг',
+    description: 'Длинное сиденье со спинкой, задние амортизаторы и площадка для ног. Задний ход помогает при парковке.',
+    enquiry: 'U2 CROSS 1500 Вт', features: ['1500 Вт', 'Длинное сиденье'],
+    variants: [
+      {id:'with',name:'С аккумулятором',description:'LiFePO4 / 60 В / 30 А·ч',price:74900},
+      {id:'dual',name:'С двумя аккумуляторами',description:'2 × 60 В / 30 А·ч',price:99000},
+      {id:'without',name:'Без аккумулятора',description:'Аккумулятор не входит в комплект',price:53900}
+    ],
+    specs: [['Мотор','1500 Вт'],['Максимальная скорость','до 73 км/ч'],['Максимальная нагрузка','300 кг'],['Аккумулятор','LiFePO4 · 60 В · 30 А·ч'],['Задний ход','Есть'],['Подвеска','Задние амортизаторы'],['Свет','Габарит, ближний и дальний']]
   },
 ];
 

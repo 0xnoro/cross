@@ -2,6 +2,8 @@
 
 ## Preview routes
 
+Studio images supplied by the owner in `Downloads/photos_mockup_2/1.png` through `6.png`: 1 Premium, 2 U2, 3 Titan 2 Pro, 4 Titan Pro, 5 Monster 2 Pro, 6 Monster Pro. Converted to WebP for both mockups. These are generated/edited product illustrations, not new documentary photographs. Mockup 1 now includes all six model pages. Mockup 2 includes a battery catalogue (21/30/45 Ah; standalone prices unknown) and a photo strip from channel export photos 6, 66, 68. Photo 66 documents a room with bicycles; its location is not independently established. Parts are mentioned in service post 89, but no SKU catalogue was present in the export.
+
 - `/`: mockup selector.
 - `/mockup-1/`: original photographic storefront restored from commit `1dce5bd`, including its catalogue, model and comparison routes.
 - `/mockup-2/`: courier product feed and battery/seat configurator.
