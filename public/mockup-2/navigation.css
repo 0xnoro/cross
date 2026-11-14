@@ -1,22 +1,10 @@
 html{scrollbar-gutter:stable}
 @view-transition{navigation:auto}
-::view-transition-old(root),::view-transition-new(root){animation:none}
-.header{view-transition-name:site-header}
-::view-transition-group(site-header){animation-duration:0s}
-::view-transition-old(site-header){display:none}
-::view-transition-new(site-header){animation:none}
+::view-transition-group(root){animation-duration:240ms}
+::view-transition-old(root),::view-transition-new(root){animation-duration:240ms;animation-timing-function:ease-in-out}
 .social-links>a,.social-links>span{display:grid;place-items:center;width:44px;height:44px;color:#fff}
 .social-links svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7}
 .social-links a:hover{color:var(--yellow)}
-
-@media (prefers-reduced-motion: no-preference) {
-  main { animation: catalogue-in 320ms ease-out both; }
-}
-
-@keyframes catalogue-in {
-  from { transform: translateY(6px); }
-  to { transform: translateY(0); }
-}
 
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }

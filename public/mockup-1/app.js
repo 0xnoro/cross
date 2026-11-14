@@ -93,9 +93,12 @@ function renderChrome() {
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !menu.hidden) closeMenu(true); });
   matchMedia('(max-width: 760px)').addEventListener('change', () => closeMenu());
 
+  let floating = scrollY > 120;
   const updateHeader = () => {
-    header.classList.toggle('is-solid', page !== 'home' || scrollY > 32);
-    header.classList.toggle('is-floating', scrollY > 80);
+    if (scrollY > 120) floating = true;
+    else if (scrollY < 24) floating = false;
+    header.classList.toggle('is-solid', page !== 'home' || floating);
+    header.classList.toggle('is-floating', floating);
   };
   updateHeader();
   window.addEventListener('scroll', updateHeader, { passive: true });

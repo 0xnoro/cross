@@ -55,9 +55,10 @@ input { accent-color: var(--olive); caret-color: var(--olive); }
 .source-note { color: var(--muted); font-size: 12px; line-height: 1.6; margin-top: 24px; max-width: 80ch; }
 .no-script { margin: 100px 24px 24px; padding: 24px; background: var(--stone); }
 
-.site-header { position: fixed; top: 0; left: 0; right: 0; width:100%; margin-inline:auto; z-index: 20; color: white; transition: background .6s, color .6s, box-shadow .6s, width .6s cubic-bezier(.22,1,.36,1), top .6s cubic-bezier(.22,1,.36,1), border-radius .6s ease; }
-.site-header .header-inner { transition:padding-inline .6s cubic-bezier(.22,1,.36,1); }
-.site-header.is-floating { top:12px; width:min(1328px,calc(100% - 48px)); border:1px solid var(--line); border-radius:14px; }
+.site-header { --header-motion:1.2s cubic-bezier(.45,0,.2,1); position: fixed; top: 0; left: 0; right: 0; width:100%; margin-inline:auto; z-index: 20; color: white; border:1px solid transparent; transition: background-color var(--header-motion), color var(--header-motion), border-color var(--header-motion), box-shadow var(--header-motion), width var(--header-motion), top var(--header-motion), border-radius var(--header-motion); }
+.site-header .header-inner { transition:padding-inline var(--header-motion); }
+.site-header .wordmark,.site-header .desktop-nav { transition:text-shadow var(--header-motion); }
+.site-header.is-floating { top:12px; width:min(1328px,calc(100% - 48px)); border-color:var(--line); border-radius:14px; }
 .site-header.is-floating.is-solid { box-shadow:0 6px 24px #00000014; }
 .site-header.is-floating .header-inner { padding-inline:24px; }
 @media(max-width:760px) {
