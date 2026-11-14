@@ -1,4 +1,5 @@
 .battery-page{min-height:70vh}
+.saved-button{text-decoration:none}
 .battery-page .battery-card{padding:0;overflow:hidden}
 .battery-card>img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;background:#fff}
 .battery-details{padding:24px}

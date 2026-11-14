@@ -128,6 +128,13 @@ dialog.addEventListener('click',event=>{
   }
 });
 document.querySelector('#saved-count').textContent=saved?'1':'0';
+if(new URLSearchParams(location.search).get('saved')==='1') {
+  renderSaved();
+  dialog.showModal();
+  const url=new URL(location.href);
+  url.searchParams.delete('saved');
+  history.replaceState(null,'',url);
+}
 render();
 document.querySelectorAll('[data-battery-enquiry]').forEach(button=>button.addEventListener('click',()=>{
   document.querySelector('#battery-dialog-title').textContent=button.dataset.batteryEnquiry;
