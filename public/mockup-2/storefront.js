@@ -119,7 +119,27 @@ feed.addEventListener('click',event=>{
   const base=models.find(m=>m.id===article.dataset.id),s=settings.get(base.id),m=selectedModel(base);
   if(button.matches('[data-configure]')){
     s.open=!s.open;button.setAttribute('aria-expanded',String(s.open));button.innerHTML=`${s.open?'Свернуть конфигурацию':'Подобрать конфигурацию'}${arrow}`;
-    article.querySelector('.configuration').hidden=!s.open;
+    const panel=article.querySelector('.configuration');
+    const height=panel.hidden?0:panel.getBoundingClientRect().height;
+    const style=getComputedStyle(panel);
+    const paddingTop=panel.hidden?'0px':style.paddingTop;
+    const paddingBottom=panel.hidden?'0px':style.paddingBottom;
+    const opacity=panel.hidden?0:style.opacity;
+    panel.getAnimations().forEach(animation=>animation.cancel());
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+      panel.hidden=!s.open;
+      panel.inert=!s.open;
+      return;
+    }
+    panel.hidden=false;
+    panel.inert=!s.open;
+    const targetStyle=getComputedStyle(panel);
+    const end={height:s.open?`${panel.getBoundingClientRect().height}px`:'0px',paddingTop:s.open?targetStyle.paddingTop:'0px',paddingBottom:s.open?targetStyle.paddingBottom:'0px',opacity:s.open?1:0};
+    const animation=panel.animate([
+      {height:`${height}px`,paddingTop,paddingBottom,opacity,overflow:'hidden'},
+      {...end,overflow:'hidden'}
+    ],{duration:420,easing:'cubic-bezier(.22,1,.36,1)'});
+    animation.finished.then(()=>{panel.hidden=!s.open;}).catch(()=>{});
   }
   if(button.matches('[data-order]')){
     const root=document.querySelector('#order-configuration');
