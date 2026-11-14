@@ -149,3 +149,55 @@ for(const id of ['battery-dialog','photo-dialog']) {
     if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)modal.close();
   });
 }
+
+function initShopMotion() {
+  const rail=document.querySelector('.shop-photos');
+  const originals=[...rail.children];
+  const track=document.createElement('div');
+  track.className='shop-track';
+  originals.forEach(item=>track.append(item));
+  originals.forEach(item=>{
+    const clone=item.cloneNode(true);
+    clone.classList.add('shop-repeat');
+    clone.setAttribute('aria-hidden','true');
+    clone.tabIndex=-1;
+    clone.addEventListener('click',()=>item.click());
+    track.append(clone);
+  });
+  rail.append(track);
+  const toggle=document.createElement('button');
+  toggle.className='shop-motion-toggle';
+  toggle.type='button';
+  document.querySelector('.shop-contact').append(toggle);
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  let animation=null,manualPause=reduced.matches,hover=false,focused=false,visible=false,lastDistance=0;
+  function update() {
+    toggle.hidden=reduced.matches;
+    toggle.textContent=manualPause?'Включить прокрутку':'Остановить прокрутку';
+    toggle.setAttribute('aria-label',toggle.textContent+' фотографий');
+    const paused=manualPause||hover||focused||!visible||document.hidden||!!document.querySelector('dialog[open]');
+    if(animation) paused?animation.pause():animation.play();
+  }
+  function layout() {
+    if(reduced.matches){animation?.cancel();animation=null;lastDistance=0;update();return;}
+    const distance=track.children[originals.length].offsetLeft-track.children[0].offsetLeft;
+    if(distance===lastDistance)return;
+    lastDistance=distance;
+    animation?.cancel();
+    animation=track.animate([{transform:`translateX(-${distance}px)`},{transform:'translateX(0)'}],{duration:distance/24*1000,iterations:Infinity,easing:'linear'});
+    update();
+  }
+  toggle.addEventListener('click',()=>{manualPause=!manualPause;update();});
+  rail.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'){hover=true;update();}});
+  rail.addEventListener('pointerleave',()=>{hover=false;update();});
+  rail.addEventListener('pointerdown',()=>{manualPause=true;update();});
+  rail.addEventListener('focusin',()=>{focused=true;update();});
+  rail.addEventListener('focusout',()=>{focused=false;update();});
+  document.addEventListener('visibilitychange',update);
+  reduced.addEventListener('change',()=>{manualPause=reduced.matches;layout();update();});
+  new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;update();}).observe(rail);
+  new ResizeObserver(layout).observe(rail);
+  new MutationObserver(update).observe(document.querySelector('#photo-dialog'),{attributes:true,attributeFilter:['open']});
+  layout();
+}
+initShopMotion();
