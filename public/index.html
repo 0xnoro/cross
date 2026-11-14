@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f2">
+  <meta name="description" content="Электровелосипеды CROSS. Выберите модель, сравните комплектации и свяжитесь с магазином в Москве.">
+  <title>CROSS | Электровелосипеды в Москве</title>
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="./assets/GolosText.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="./assets/cross-ride.webp" as="image">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body data-page="home">
+  <a class="skip" href="#main">Перейти к содержимому</a>
+  <header class="site-header" data-header></header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero-image" src="./assets/cross-ride.webp" alt="Человек в оливковой куртке едет на сером электробайке CROSS вдоль городского фасада" width="1672" height="941" fetchpriority="high">
+      <div class="hero-copy">
+        <h1 id="hero-title">Cross<span class="sr-only">, электровелосипеды</span></h1>
+        <p class="hero-price">от 65 000 ₽</p>
+      </div>
+      <div class="hero-action"><a class="button button-dark" href="./catalog/">Выбрать модель</a></div>
+    </section>
+    <section class="home-models section-wrap" aria-labelledby="models-title">
+      <div class="section-heading"><h2 id="models-title">Модели CROSS</h2><a class="text-link" href="./catalog/">Весь каталог <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div>
+      <div class="product-grid" data-home-products></div>
+    </section>
+    <figure class="ride-film" aria-label="Поездка на CROSS по Москве">
+      <video data-ride-video data-src="./assets/cross-moscow-ride.mp4" poster="./assets/cross-moscow-ride-poster.webp" width="1600" height="900" muted loop playsinline preload="none" controls aria-label="Видео поездки на электробайке CROSS"></video>
+      <button class="film-toggle" data-film-toggle type="button" hidden aria-label="Воспроизвести видео"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z"/></svg></button>
+      <noscript><a class="film-fallback" href="./assets/cross-moscow-ride.mp4">Смотреть видео</a></noscript>
+    </figure>
+    <section class="ride-invite" aria-labelledby="ride-invite-title">
+      <h2 id="ride-invite-title">Хочешь с нами?</h2>
+      <a class="button button-white" href="./catalog/">Оставить заявку</a>
+    </section>
+    <section class="store-location section-wrap" id="store" aria-labelledby="store-title">
+      <div class="location-copy">
+        <h2 id="store-title">Магазин <br>в Москве</h2>
+        <address>Шоссе Энтузиастов, 18</address>
+        <a class="quiet-link" href="https://yandex.ru/maps/?text=Москва%2C%20шоссе%20Энтузиастов%2C%2018" target="_blank" rel="noopener noreferrer">Открыть в Яндекс Картах</a>
+      </div>
+      <iframe class="location-map" title="Яндекс Карта: Москва, шоссе Энтузиастов, 18" src="https://yandex.ru/map-widget/v1/?ll=37.714213%2C55.749927&amp;pt=37.714213%2C55.749927%2Cpm2rdm&amp;z=16&amp;scroll=false" width="960" height="440" loading="lazy" allowfullscreen></iframe>
+    </section>
+  </main>
+  <footer class="site-footer" data-footer></footer>
+  <div data-compare-tray></div>
+  <p class="sr-only" data-announcement role="status"></p>
+  <noscript><p class="no-script">Для выбора моделей включите JavaScript.</p></noscript>
+</body>
+</html>
