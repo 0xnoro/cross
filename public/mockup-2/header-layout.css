@@ -1,8 +1,8 @@
 .topline{display:none}
-.header{width:100%;margin-inline:auto;transition:width .3s ease,top .3s ease,border-radius .3s ease,box-shadow .3s ease;background:#fff}
-.header.is-floating{top:12px;width:calc(100% - 48px);max-width:1328px;border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 24px #19465b14}
+.header{width:100%;margin-inline:auto;transition:width .6s cubic-bezier(.22,1,.36,1),top .6s cubic-bezier(.22,1,.36,1),border-radius .6s ease,box-shadow .6s ease;background:#fff}
+.header.is-floating{top:12px;width:min(1328px,calc(100% - 48px));border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 24px #19465b14}
 .header.is-floating .header-inner{width:calc(100% - 40px)}
-.header .header-inner{display:grid;grid-template-columns:auto 1fr auto auto;gap:24px;min-height:88px;padding-block:12px;align-items:center}
+.header .header-inner{display:grid;grid-template-columns:auto 1fr auto auto;gap:24px;min-height:88px;padding-block:12px;align-items:center;transition:width .6s cubic-bezier(.22,1,.36,1)}
 .header .logo{font-size:34px}
 .header nav{justify-self:start;margin-left:32px;gap:26px;order:initial;width:auto}
 .header nav a{position:relative;min-height:48px;text-decoration:none}
@@ -28,4 +28,4 @@
  .header nav{grid-column:1/-1;grid-row:2;display:flex;justify-content:space-between;justify-self:stretch;width:100%;gap:12px;font-size:13px}
  .header nav a{min-height:44px}
 }
-@media(prefers-reduced-motion:reduce){.header{transition:none}}
+@media(prefers-reduced-motion:reduce){.header,.header .header-inner{transition:none}}
