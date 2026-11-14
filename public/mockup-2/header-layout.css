@@ -1,8 +1,8 @@
 .topline{display:none}
-.header{width:100%;margin-inline:auto;transition:width .6s cubic-bezier(.22,1,.36,1),top .6s cubic-bezier(.22,1,.36,1),border-radius .6s ease,box-shadow .6s ease;background:#fff}
+.header{--header-motion:.9s cubic-bezier(.45,0,.2,1);width:100%;margin-inline:auto;border:1px solid transparent;border-bottom-color:var(--line);transition:width var(--header-motion),top var(--header-motion),border-radius var(--header-motion),box-shadow var(--header-motion),border-color var(--header-motion);background:#fff}
 .header.is-floating{top:12px;width:min(1328px,calc(100% - 48px));border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 24px #19465b14}
 .header.is-floating .header-inner{width:calc(100% - 40px)}
-.header .header-inner{display:grid;grid-template-columns:auto 1fr auto auto;gap:24px;min-height:88px;padding-block:12px;align-items:center;transition:width .6s cubic-bezier(.22,1,.36,1)}
+.header .header-inner{display:grid;grid-template-columns:auto 1fr auto auto;gap:24px;min-height:88px;padding-block:12px;align-items:center;transition:width var(--header-motion)}
 .header .logo{font-size:34px}
 .header nav{justify-self:start;margin-left:32px;gap:26px;order:initial;width:auto}
 .header nav a{position:relative;min-height:48px;text-decoration:none}
