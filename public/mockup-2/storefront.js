@@ -33,7 +33,7 @@ function card(base) {
   const versions=models.filter(item=>item.name===m.name);
   return `<article class="bike-card" data-id="${key}" aria-labelledby="title-${key}">
     <div class="bike-heading"><div><h3 id="title-${key}">${m.name}</h3><p>${m.version}</p></div><span class="brand-stamp">CROSS</span></div>
-    <div class="bike-photo"><img src="${photo(m)}" alt="${m.name}, витринное изображение модели" width="1600" height="1200" loading="lazy"><span class="photo-detail">${m.detail}</span></div>
+    <div class="bike-photo"><img src="${photo(m)}" alt="${m.name}, витринное изображение модели" width="1600" height="1200" loading="lazy"></div>
     <div class="purchase"><p class="chosen-battery" data-chosen-battery>${m.labels[s.battery]}</p>
     <div class="price-row"><strong data-price>${money(m.prices[s.battery])}</strong><span data-price-note>${s.battery?'велосипед + АКБ':'велосипед без АКБ'}</span></div>
     <button class="configure" data-configure aria-expanded="${s.open}" aria-controls="config-${key}">${s.open?'Свернуть конфигурацию':'Подобрать конфигурацию'}${arrow}</button></div>
@@ -176,17 +176,10 @@ function initShopMotion() {
     track.append(clone);
   });
   rail.append(track);
-  const toggle=document.createElement('button');
-  toggle.className='shop-motion-toggle';
-  toggle.type='button';
-  document.querySelector('.shop-contact').append(toggle);
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  let animation=null,manualPause=reduced.matches,hover=false,focused=false,visible=false,lastDistance=0;
+  let animation=null,hover=false,focused=false,visible=false,lastDistance=0;
   function update() {
-    toggle.hidden=reduced.matches;
-    toggle.textContent=manualPause?'Включить прокрутку':'Остановить прокрутку';
-    toggle.setAttribute('aria-label',toggle.textContent+' фотографий');
-    const paused=manualPause||hover||focused||!visible||document.hidden||!!document.querySelector('dialog[open]');
+    const paused=reduced.matches||hover||focused||!visible||document.hidden||!!document.querySelector('dialog[open]');
     if(animation) paused?animation.pause():animation.play();
   }
   function layout() {
@@ -198,14 +191,12 @@ function initShopMotion() {
     animation=track.animate([{transform:`translateX(-${distance}px)`},{transform:'translateX(0)'}],{duration:distance/24*1000,iterations:Infinity,easing:'linear'});
     update();
   }
-  toggle.addEventListener('click',()=>{manualPause=!manualPause;update();});
   rail.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'){hover=true;update();}});
   rail.addEventListener('pointerleave',()=>{hover=false;update();});
-  rail.addEventListener('pointerdown',()=>{manualPause=true;update();});
   rail.addEventListener('focusin',()=>{focused=true;update();});
   rail.addEventListener('focusout',()=>{focused=false;update();});
   document.addEventListener('visibilitychange',update);
-  reduced.addEventListener('change',()=>{manualPause=reduced.matches;layout();update();});
+  reduced.addEventListener('change',()=>{layout();update();});
   new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;update();}).observe(rail);
   new ResizeObserver(layout).observe(rail);
   new MutationObserver(update).observe(document.querySelector('#photo-dialog'),{attributes:true,attributeFilter:['open']});
