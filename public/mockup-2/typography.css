@@ -1,0 +1,9 @@
+.logo,.brand-stamp{font-family:Golos,Arial,sans-serif}
+.catalog-heading h1{font-size:32px;font-weight:700;letter-spacing:0;line-height:1.2}
+.bike-heading h3{font-size:30px;font-weight:700;letter-spacing:0;line-height:1.2}
+.header nav,.families button,.sort,.configure,.saved-button,.save-build,.config-field{font-weight:400}
+.header nav,.families button{font-size:15px}
+.configuration h4,.battery-details h2{font-weight:700;letter-spacing:0}
+.price-row strong,.build-total strong{font-weight:700;letter-spacing:0}
+.header .saved-button{font-weight:400}
+@media(max-width:650px){.catalog-heading h1{font-size:27px}.bike-heading h3{font-size:27px}.families button{font-size:14px}.header nav{font-size:14px}}
