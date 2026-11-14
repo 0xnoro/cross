@@ -1,0 +1,8 @@
+#order-dialog{width:min(560px,calc(100% - 28px))}
+#order-configuration{padding:18px;background:var(--ice);line-height:1.7;margin-bottom:24px;border-radius:5px}
+#order-form{display:grid;gap:18px}
+#order-form label{display:grid;gap:8px;font-size:14px;font-weight:600}
+#order-form input,#order-form select,#order-form textarea{width:100%;min-width:0;min-height:46px;padding:12px;border:1px solid #9bbdcc;border-radius:4px;background:#fff;color:var(--ink);font:inherit}
+#order-form textarea{resize:vertical;min-height:80px}
+#order-form .save-build{margin:0}
+#order-form small{font-size:13px;line-height:1.5;color:var(--muted)}

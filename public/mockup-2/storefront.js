@@ -36,16 +36,15 @@ function card(base) {
     <div class="bike-photo"><img src="${photo(m)}" alt="${m.name}, витринное изображение модели" width="1600" height="1200" loading="lazy"><span class="photo-detail">${m.detail}</span></div>
     <div class="purchase"><p class="chosen-battery" data-chosen-battery>${m.labels[s.battery]}</p>
     <div class="price-row"><strong data-price>${money(m.prices[s.battery])}</strong><span data-price-note>${s.battery?'велосипед + АКБ':'велосипед без АКБ'}</span></div>
-    <button class="configure" data-configure aria-expanded="${s.open}" aria-controls="config-${key}">${s.open?'Свернуть конструктор':'Собрать велосипед'}${arrow}</button></div>
+    <button class="configure" data-configure aria-expanded="${s.open}" aria-controls="config-${key}">${s.open?'Свернуть конфигурацию':'Подобрать конфигурацию'}${arrow}</button></div>
     <div class="configuration" id="config-${key}" ${s.open?'':'hidden'}>
-    <h4>Собери свой CROSS</h4>
+    <h4>Конфигурация</h4>
     <div class="fixed-version"><span>Модель</span><strong>${base.name}</strong></div>
     ${versions.length>1?`<label class="config-field" for="version-${key}">Мощность и подвеска<select id="version-${key}" data-version>${versions.map(v=>`<option value="${v.id}" ${v.id===m.id?'selected':''}>${v.version}${v.id==='monster-2'?' · базовая версия':''}</option>`).join('')}</select></label>`:`<div class="fixed-version"><span>Мощность и оснащение</span><strong>${m.version} · ${m.detail}</strong></div>`}
     <label class="config-field" for="battery-${key}">Аккумулятор<select id="battery-${key}" data-battery>${m.labels.map((l,i)=>`<option value="${i}" ${s.battery===i?'selected':''}>${l} (${money(m.prices[i])})</option>`).join('')}</select><small>В скобках стоимость велосипеда с выбранным аккумулятором.</small></label>
     <fieldset><legend>Сиденье</legend><div class="seat-options">${seats.map((seat,i)=>`<label><input type="radio" name="seat-${key}" value="${i}" ${s.seat===i?'checked':''}><span>${seat}</span></label>`).join('')}</div></fieldset>
     ${m.id==='u2-premium'?`<label class="config-field color-field" for="color-${key}">Цвет<select id="color-${key}" data-color><option value="silver" ${s.color==='silver'?'selected':''}>Серебристый</option><option value="black" ${s.color==='black'?'selected':''}>Чёрный</option></select><small>Оба цвета упомянуты в анонсе. На фото серебристый; наличие не подтверждено.</small></label>`:''}
-    <p class="seat-note">Сиденья пока для примерки: совместимость и доплата не заданы. Фото показывает штатную комплектацию.</p>
-    <div class="build-summary" data-summary>${summary(m,s)}</div><div class="build-total"><span>Велосипед и АКБ</span><strong data-total>${money(m.prices[s.battery])}</strong></div><button class="save-build" data-save>Сохранить сборку</button><p class="save-status" role="status"></p></div>
+    <div class="build-summary" data-summary>${summary(m,s)}</div><div class="build-total"><span>Велосипед и АКБ</span><strong data-total>${money(m.prices[s.battery])}</strong></div><button class="save-build" data-order>Оформить заказ</button><button class="remove-build" data-save>Сохранить сборку</button><p class="save-status" role="status"></p></div>
   </article>`;
 }
 function summary(m,s) { return `${m.name}, ${m.version}<br>Аккумулятор: ${m.labels[s.battery]}<br>Сиденье: ${seats[s.seat].toLowerCase()}${m.id==='u2-premium'?`<br>Цвет: ${s.color==='black'?'чёрный':'серебристый'}`:''}${s.seat ? '<br><small>Стоимость выбранного сиденья не включена.</small>':''}`; }
@@ -96,8 +95,13 @@ feed.addEventListener('click',event=>{
   const button=event.target.closest('button'), article=button?.closest('[data-id]');if(!article)return;
   const base=models.find(m=>m.id===article.dataset.id),s=settings.get(base.id),m=selectedModel(base);
   if(button.matches('[data-configure]')){
-    s.open=!s.open;button.setAttribute('aria-expanded',String(s.open));button.innerHTML=`${s.open?'Свернуть конструктор':'Собрать велосипед'}${arrow}`;
+    s.open=!s.open;button.setAttribute('aria-expanded',String(s.open));button.innerHTML=`${s.open?'Свернуть конфигурацию':'Подобрать конфигурацию'}${arrow}`;
     article.querySelector('.configuration').hidden=!s.open;
+  }
+  if(button.matches('[data-order]')){
+    const root=document.querySelector('#order-configuration');
+    root.innerHTML=summary(m,s)+`<br><strong>${money(m.prices[s.battery])}</strong>`;
+    document.querySelector('#order-dialog').showModal();
   }
   if(button.matches('[data-save]')){
     saved={id:m.id,battery:s.battery,seat:s.seat,color:s.color};
