@@ -57,12 +57,6 @@ async function navigate(url, push = true) {
     document.title = page.title;
     if (current === bikesPath && !bikesReady) {
       for (const dialog of page.dialogs) document.body.append(dialog);
-      const old = document.querySelector('.saved-button');
-      const button = document.createElement('button');
-      button.className = old.className;
-      button.id = 'open-saved';
-      button.innerHTML = old.innerHTML;
-      old.replaceWith(button);
       await import('./storefront.js');
       await import('./order.js');
       bikesReady = true;
@@ -78,7 +72,6 @@ async function navigate(url, push = true) {
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       page.main.animate([{transform:'translateY(5px)'},{transform:'translateY(0)'}], {duration:360, easing:'ease-out'});
     }
-    if (url.searchParams.get('saved') === '1' && bikesReady && !document.querySelector('#saved-dialog').open) document.querySelector('#open-saved').click();
   } catch {
     location.assign(url.href);
   } finally {
@@ -87,19 +80,12 @@ async function navigate(url, push = true) {
 }
 
 document.addEventListener('click', event => {
-  if (current === batteriesPath && event.target.closest('#open-saved')) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    navigate(new URL('?saved=1', base));
-  }
-}, true);
-document.addEventListener('click', event => {
   if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   const link = event.target.closest('a');
   if (!link || link.target || link.hasAttribute('download')) return;
   const url = new URL(link.href);
   if (url.origin !== location.origin || ![bikesPath, batteriesPath].includes(url.pathname)) return;
-  if (url.pathname === current && !url.searchParams.has('saved')) return;
+  if (url.pathname === current) return;
   event.preventDefault();
   navigate(url);
 });

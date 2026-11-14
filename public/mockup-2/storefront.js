@@ -19,12 +19,6 @@ const settings = new Map(baseModels.map(m => [m.id, {modelId:m.id,battery:1,seat
 const selectedModel = (base) => models.find(m=>m.id===settings.get(base.id).modelId && m.name===base.name) || base;
 const feed = document.querySelector('#feed');
 let family = 'all';
-let saved = null;
-try {
-  const candidate = JSON.parse(localStorage.getItem('cross-build-v2'));
-  const model = models.find(m => m.id === candidate?.id);
-  if (model && Number.isInteger(candidate.battery) && model.prices[candidate.battery] !== undefined && Number.isInteger(candidate.seat) && seats[candidate.seat]) saved = {...candidate,color:candidate.color==='black'?'black':'silver'};
-} catch {}
 const studioPhotos = {'Монстр Про':'monster-pro','Монстр 2 Про':'monster-2-pro','Титан Про':'titan-pro','Титан 2 Про':'titan-2-pro','U2 CROSS':'u2','U2PRO Premium':'u2pro-premium'};
 const photo = m => `./assets/studio/${studioPhotos[m.name]}.webp`;
 const arrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
@@ -44,7 +38,7 @@ function card(base) {
     <label class="config-field" for="battery-${key}">Аккумулятор<select id="battery-${key}" data-battery>${m.labels.map((l,i)=>`<option value="${i}" ${s.battery===i?'selected':''}>${l} (${money(m.prices[i])})</option>`).join('')}</select><small>В скобках стоимость велосипеда с выбранным аккумулятором.</small></label>
     <fieldset><legend>Сиденье</legend><div class="seat-options">${seats.map((seat,i)=>`<label><input type="radio" name="seat-${key}" value="${i}" ${s.seat===i?'checked':''}><span>${seat}</span></label>`).join('')}</div></fieldset>
     ${m.id==='u2-premium'?`<label class="config-field color-field" for="color-${key}">Цвет<select id="color-${key}" data-color><option value="silver" ${s.color==='silver'?'selected':''}>Серебристый</option><option value="black" ${s.color==='black'?'selected':''}>Чёрный</option></select><small>Оба цвета упомянуты в анонсе. На фото серебристый; наличие не подтверждено.</small></label>`:''}
-    <div class="build-summary" data-summary>${summary(m,s)}</div><div class="build-total"><span>Велосипед и АКБ</span><strong data-total>${money(m.prices[s.battery])}</strong></div><button class="save-build" data-order>Оформить заказ</button><button class="remove-build" data-save>Сохранить сборку</button><p class="save-status" role="status"></p></div>
+    <div class="build-summary" data-summary>${summary(m,s)}</div><div class="build-total"><span>Велосипед и АКБ</span><strong data-total>${money(m.prices[s.battery])}</strong></div><button class="save-build" data-order>Оформить заказ</button></div>
   </article>`;
 }
 function summary(m,s) { return `${m.name}, ${m.version}<br>Аккумулятор: ${m.labels[s.battery]}<br>Сиденье: ${seats[s.seat].toLowerCase()}${m.id==='u2-premium'?`<br>Цвет: ${s.color==='black'?'чёрный':'серебристый'}`:''}${s.seat ? '<br><small>Стоимость выбранного сиденья не включена.</small>':''}`; }
@@ -108,7 +102,6 @@ feed.addEventListener('change',event=>{
   article.querySelector('[data-summary]').innerHTML=summary(m,s);
   article.querySelector('[data-total]').textContent=money(m.prices[s.battery]);
   article.querySelector('[data-chosen-battery]').textContent=m.labels[s.battery];
-  article.querySelector('.save-status').textContent='';
   if(el.matches('[data-battery]') && document.querySelector('#sort').value!=='default') {
     render(true);
     document.getElementById(`battery-${base.id}`).focus({preventScroll:true});
@@ -146,42 +139,7 @@ feed.addEventListener('click',event=>{
     root.innerHTML=summary(m,s)+`<br><strong>${money(m.prices[s.battery])}</strong>`;
     document.querySelector('#order-dialog').showModal();
   }
-  if(button.matches('[data-save]')){
-    saved={id:m.id,battery:s.battery,seat:s.seat,color:s.color};
-    let persisted=true;try{localStorage.setItem('cross-build-v2',JSON.stringify(saved));}catch{persisted=false;}
-    document.querySelector('#saved-count').textContent='1';
-    article.querySelector('.save-status').textContent=persisted?'Сборка сохранена. Открой «Моя сборка» вверху.':'Сборка сохранена только до закрытия страницы: хранилище браузера недоступно.';
-  }
 });
-const dialog=document.querySelector('#saved-dialog');
-function renderSaved(){
-  const root=document.querySelector('#saved-content');
-  if(!saved){root.innerHTML='<p>Пока нет сохранённой сборки.</p><p>Выбери велосипед, аккумулятор и сиденье в каталоге.</p><button class="save-build" data-return>К велосипедам</button>';return;}
-  const m=models.find(m=>m.id===saved.id);
-  root.innerHTML=`<div class="saved-layout"><div class="saved-image"><img class="saved-photo" src="${photo(m)}" alt="${m.name}"></div><div class="saved-details"><h3>${m.name}</h3><dl class="saved-specs"><div><dt>Версия</dt><dd>${m.version}</dd></div><div><dt>Аккумулятор</dt><dd>${m.labels[saved.battery]}</dd></div><div><dt>Сиденье</dt><dd>${seats[saved.seat]}</dd></div>${m.id==='u2-premium'?`<div><dt>Цвет</dt><dd>${saved.color==='black'?'Чёрный':'Серебристый'}</dd></div>`:''}</dl><div class="saved-total"><span>Велосипед${saved.battery?' и АКБ':''}</span><strong class="saved-price">${money(m.prices[saved.battery])}</strong></div>${saved.seat?'<p class="seat-note">Сиденье оплачивается отдельно.</p>':''}<button class="save-build" data-edit>Изменить конфигурацию</button><button class="remove-build" data-remove>Удалить сборку</button></div></div>`;
-}
-document.querySelector('#open-saved').addEventListener('click',()=>{renderSaved();dialog.showModal();});
-document.querySelector('#close-saved').addEventListener('click',()=>dialog.close());
-dialog.addEventListener('click',event=>{
-  if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}
-  if(event.target.matches('[data-remove]')){saved=null;try{localStorage.removeItem('cross-build-v2');}catch{}document.querySelector('#saved-count').textContent='0';renderSaved();}
-  if(event.target.matches('[data-return]')){dialog.close();document.querySelector('[data-family]').focus();}
-  if(event.target.matches('[data-edit]')){
-    const model=models.find(m=>m.id===saved.id);
-    const base=baseModels.find(m=>m.name===model.name);
-    settings.set(base.id,{modelId:saved.id,battery:saved.battery,seat:saved.seat,color:saved.color,open:true});
-    document.querySelector('[data-family="all"]').click();dialog.close();
-    const article=feed.querySelector(`[data-id="${base.id}"]`);article.scrollIntoView({block:'start'});article.querySelector('[data-configure]').focus({preventScroll:true});
-  }
-});
-document.querySelector('#saved-count').textContent=saved?'1':'0';
-if(new URLSearchParams(location.search).get('saved')==='1') {
-  renderSaved();
-  dialog.showModal();
-  const url=new URL(location.href);
-  url.searchParams.delete('saved');
-  history.replaceState(null,'',url);
-}
 render();
 document.querySelectorAll('[data-battery-enquiry]').forEach(button=>button.addEventListener('click',()=>{
   document.querySelector('#battery-dialog-title').textContent=button.dataset.batteryEnquiry;
