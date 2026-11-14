@@ -189,9 +189,9 @@ function initShopMotion() {
   });
   rail.append(track);
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  let animation=null,hover=false,focused=false,visible=false,lastDistance=0;
+  let animation=null,visible=false,lastDistance=0;
   function update() {
-    const paused=reduced.matches||hover||focused||!visible||document.hidden||!!document.querySelector('dialog[open]');
+    const paused=reduced.matches||!visible||document.hidden||!!document.querySelector('dialog[open]');
     if(animation) paused?animation.pause():animation.play();
   }
   function layout() {
@@ -203,10 +203,6 @@ function initShopMotion() {
     animation=track.animate([{transform:`translateX(-${distance}px)`},{transform:'translateX(0)'}],{duration:distance/24*1000,iterations:Infinity,easing:'linear'});
     update();
   }
-  rail.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'){hover=true;update();}});
-  rail.addEventListener('pointerleave',()=>{hover=false;update();});
-  rail.addEventListener('focusin',()=>{focused=true;update();});
-  rail.addEventListener('focusout',()=>{focused=false;update();});
   document.addEventListener('visibilitychange',update);
   reduced.addEventListener('change',()=>{layout();update();});
   new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;update();}).observe(rail);
