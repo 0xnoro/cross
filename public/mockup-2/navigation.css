@@ -1,7 +1,5 @@
 html{scrollbar-gutter:stable}
-@view-transition{navigation:auto}
-::view-transition-group(root){animation-duration:240ms}
-::view-transition-old(root),::view-transition-new(root){animation-duration:240ms;animation-timing-function:ease-in-out}
+@view-transition{navigation:none}
 .social-links>a,.social-links>span{display:grid;place-items:center;width:44px;height:44px;color:#fff}
 .social-links svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7}
 .social-links a:hover{color:var(--yellow)}
