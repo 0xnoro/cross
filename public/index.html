@@ -1,54 +1,17 @@
 <!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f5f2">
-  <meta name="description" content="Электровелосипеды CROSS. Выберите модель, сравните комплектации и свяжитесь с магазином в Москве.">
-  <title>CROSS | Электровелосипеды в Москве</title>
-  <link rel="icon" href="data:,">
-  <link rel="preload" href="./assets/GolosText.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="./assets/cross-ride.webp" as="image">
-  <link rel="stylesheet" href="./style.css">
-  <script type="module" src="./app.js"></script>
-</head>
-<body data-page="home">
-  <a class="skip" href="#main">Перейти к содержимому</a>
-  <header class="site-header" data-header></header>
-  <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <img class="hero-image" src="./assets/cross-ride.webp" alt="Человек в оливковой куртке едет на сером электробайке CROSS вдоль городского фасада" width="1672" height="941" fetchpriority="high">
-      <div class="hero-copy">
-        <h1 id="hero-title">Cross<span class="sr-only">, электровелосипеды</span></h1>
-        <p class="hero-price">от 65 000 ₽</p>
-      </div>
-      <div class="hero-action"><a class="button button-dark" href="./catalog/">Выбрать модель</a></div>
-    </section>
-    <section class="home-models section-wrap" aria-labelledby="models-title">
-      <div class="section-heading"><h2 id="models-title">Модели CROSS</h2><a class="text-link" href="./catalog/">Весь каталог <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div>
-      <div class="product-grid" data-home-products></div>
-    </section>
-    <figure class="ride-film" aria-label="Поездка на CROSS по Москве">
-      <video data-ride-video data-src="./assets/cross-moscow-ride.mp4" poster="./assets/cross-moscow-ride-poster.webp" width="1600" height="900" muted loop playsinline preload="none" controls aria-label="Видео поездки на электробайке CROSS"></video>
-      <button class="film-toggle" data-film-toggle type="button" hidden aria-label="Воспроизвести видео"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z"/></svg></button>
-      <noscript><a class="film-fallback" href="./assets/cross-moscow-ride.mp4">Смотреть видео</a></noscript>
-    </figure>
-    <section class="ride-invite" aria-labelledby="ride-invite-title">
-      <h2 id="ride-invite-title">Хочешь с нами?</h2>
-      <a class="button button-white" href="./catalog/">Оставить заявку</a>
-    </section>
-    <section class="store-location section-wrap" id="store" aria-labelledby="store-title">
-      <div class="location-copy">
-        <h2 id="store-title">Магазин <br>в Москве</h2>
-        <address>Шоссе Энтузиастов, 18</address>
-        <a class="quiet-link" href="https://2gis.ru/moscow/geo/37.714302,55.749896" target="_blank" rel="noopener noreferrer">Открыть в 2ГИС</a>
-      </div>
-      <iframe class="location-map" title="2ГИС: магазин CROSS, Москва, шоссе Энтузиастов, 18" src="https://makemap.2gis.ru/widget?data=eJxFj11vgjAUhv_L2aXEFFRQEi-2simGETBZlm3xgsCRNamUlOOcEv67BffRmybnOW_7Pi0oXaDGYoXqgKQFNuB_tEDnGsGHJ8zoqBEsqLWqUdPAW8iVVNrwO-bM7b1jOAmSfSK1N8mL_bw0owKbXIuahKoMSNb3I7a5pF-0emCRThvip4gHWxHzEXtbb8uC22HMiUWTbUmrgEX79Bjz08DI7ERhEwaP04QvTkm57D-4hFWB3-Db7Pd0FpQ3kXNf88ciUaIis58rIyuqjAbJiTf27OmEOdZsNvami_nC3Zm8KMB3nW5nwSGrE9WIW_8WZH_9h0BmBP5f1LRR6mC6uOYN462kfP1ElO_DdJ_JBrsrVz1w8w" width="960" height="440" loading="lazy" sandbox="allow-modals allow-forms allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"></iframe>
-    </section>
-  </main>
-  <footer class="site-footer" data-footer></footer>
-  <div data-compare-tray></div>
-  <p class="sr-only" data-announcement role="status"></p>
-  <noscript><p class="no-script">Для выбора моделей включите JavaScript.</p></noscript>
-</body>
-</html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#19465b">
+<title>CROSS | Электровелосипеды для работы</title><meta name="description" content="Выберите электровелосипед CROSS, аккумулятор и сиденье. Магазин в Москве на шоссе Энтузиастов, 18.">
+<link rel="icon" href="data:,"><link rel="preload" href="./assets/GolosText.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="./storefront.css"><script type="module" src="./storefront.js"></script>
+</head><body>
+<a class="skip" href="#catalog">Перейти к велосипедам</a>
+<div class="topline"><div class="wrap"><span>Москва, шоссе Энтузиастов, 18</span><a href="tel:+79261039797">+7 926 103-97-97</a></div></div>
+<header class="header"><div class="wrap header-inner"><a class="logo" href="./" aria-label="CROSS, главная">CROSS<span>электровелосипеды</span></a><nav aria-label="Основная навигация"><a href="#catalog">Велосипеды</a><a href="#assembly">Как собрать</a><a href="#store">Магазин</a></nav><button class="saved-button" id="open-saved">Моя сборка <span id="saved-count">0</span></button></div></header>
+<main>
+<section class="intro wrap"><div><h1>Велосипед для работы.<br>Комплектация под тебя.</h1><p>Выбери CROSS, аккумулятор и удобное сиденье.</p></div><a class="intro-link" href="#catalog">Собрать свой CROSS <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></section>
+<section class="wrap catalog" id="catalog" aria-labelledby="catalog-title"><div class="catalog-heading"><h2 id="catalog-title">Электровелосипеды</h2><span id="result-count" role="status">10 вариантов</span></div><div class="toolbar"><div class="families" aria-label="Семейство велосипеда"><button data-family="all" aria-pressed="true">Все модели</button><button data-family="monster" aria-pressed="false">Монстр</button><button data-family="titan" aria-pressed="false">Титан</button><button data-family="u2" aria-pressed="false">U2</button></div><label class="sort">Сортировка<select id="sort"><option value="default">По модельному ряду</option><option value="price">Сначала дешевле</option><option value="price-desc">Сначала дороже</option></select></label></div><div id="feed" class="feed"><p>Загружаем модели CROSS…</p></div><noscript><p>Включите JavaScript, чтобы выбрать комплектацию.</p></noscript><p class="preview-note">Предварительный каталог. Цены из публикаций CROSS; наличие и актуальная стоимость пока не подтверждены.</p></section>
+<section class="assembly wrap" id="assembly"><h2>Твой CROSS,<br>твоя комплектация</h2><div><p>Начни с модели. В карточке выбери аккумулятор, затем открой конструктор и подбери сиденье.</p><p>Сохрани сборку, чтобы вернуться к ней позже. В этом макете она остаётся только в твоём браузере.</p><a href="#catalog">Выбрать велосипед</a></div></section>
+<section class="store" id="store"><div class="wrap store-inner"><div><h2>Посмотри вживую</h2><p>Москва, шоссе Энтузиастов, 18</p><a href="https://2gis.ru/moscow/geo/37.714302,55.749896" target="_blank" rel="noopener noreferrer">Открыть в 2ГИС</a></div><div><p>Магазин CROSS</p><a class="store-phone" href="tel:+79261039797">+7 926 103-97-97</a></div></div></section>
+</main><footer class="wrap footer"><a class="logo" href="./">CROSS</a><p>Предварительный макет магазина</p><a href="#catalog">К велосипедам</a></footer>
+<dialog id="saved-dialog" aria-labelledby="saved-title"><div class="dialog-heading"><h2 id="saved-title">Моя сборка</h2><button id="close-saved" class="close" aria-label="Закрыть"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div id="saved-content"></div></dialog>
+</body></html>
