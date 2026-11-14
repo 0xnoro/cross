@@ -1,0 +1,11 @@
+.battery-page{min-height:70vh}
+.battery-page .battery-card{padding:0;overflow:hidden}
+.battery-card>img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;background:#fff}
+.battery-details{padding:24px}
+.battery-details h2{font-size:25px;letter-spacing:-.5px}
+.battery-details>p{margin-top:8px;color:var(--muted);font-size:14px}
+.battery-action{background:var(--ink);color:#fff;padding:20px;margin:24px -24px -24px}
+.battery-action a{display:block;text-align:center;background:var(--yellow);color:var(--ink);padding:14px;border-radius:4px;font-weight:600;text-decoration:none}
+.battery-action a:hover{background:#ffec87}
+nav [aria-current="page"]{text-decoration:underline;text-underline-offset:6px}
+@media(min-width:651px) and (max-width:900px){.battery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
