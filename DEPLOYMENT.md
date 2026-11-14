@@ -1,5 +1,13 @@
 # CROSS preview
 
+## Preview routes
+
+- `/`: mockup selector.
+- `/mockup-1/`: original photographic storefront restored from commit `1dce5bd`, including its catalogue, model and comparison routes.
+- `/mockup-2/`: courier product feed and battery/seat configurator.
+
+Each mockup has independent entry files and relative assets. Future mockups should be added as separate directories and linked from the selector. CRM is not connected.
+
 Static storefront prototype. GitHub Pages deploys `public/` on pushes to `main`.
 
 Run locally:
